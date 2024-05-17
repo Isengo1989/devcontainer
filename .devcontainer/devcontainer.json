@@ -1,0 +1,17 @@
+{
+  "name": "Shopware Developer Portal",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "onCreateCommand": "bash ./.devcontainer/on-create.sh",
+  "postCreateCommand": "bash ./.devcontainer/post-create.sh",
+  "features": {
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+      ]
+    }
+  }
+}
