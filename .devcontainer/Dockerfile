@@ -1,20 +1,18 @@
-FROM ghcr.io/shopware/docker-base:8.2 as base-image
-FROM ghcr.io/friendsofshopware/shopware-cli:latest-php-8.2 as shopware-cli
+FROM dockware/dev:latest
 
-# build
+# Set the working directory in the container
+WORKDIR /var/www/html
 
-FROM shopware-cli as build
+# Copy the current directory contents into the container
+COPY . .
 
-COPY --link . /src
-WORKDIR /src
+# Install any needed packages specified in requirements.txt
+RUN composer install
 
-RUN --mount=type=secret,id=composer_auth,dst=/src/auth.json \
-    --mount=type=cache,target=/root/.composer \
-    --mount=type=cache,target=/root/.npm \
-    /usr/local/bin/entrypoint.sh shopware-cli project ci /src
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
-# build final image
+# Define environment variable
+ENV NAME Shopware
 
-FROM base-image
-
-COPY --from=build --chown=www-data /src /var/www/html
+# Run app.py when the container launche
